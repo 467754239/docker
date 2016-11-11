@@ -1,0 +1,18 @@
+
+
+http://docs.master.dockerproject.org/engine/installation/linux/centos/
+这个链接地址是CentOS7安装Docker的官方文档
+
+--------------------------------------------------------------------------------------
+Docker在CentOS7.x上的兼容性不是很好.
+
+- Prerequisites(先决条件)
+Docker要安装在64位操作系统
+内核版本等于高于3.10
+
+-- Install(安装)
+有两种方式安装Docker Engine；
+方式1 你可以使用yum进行安装
+方式2 运行一个安装脚本(脚本其实也是YUM的方式)
+
+大致意思是这样的，更具体的可以参考上面链接.

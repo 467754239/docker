@@ -1,0 +1,108 @@
+
+(1) 开始使用Docker
+http://docs.master.dockerproject.org/engine/getstarted/
+
+1. 在你的平台上安装Docker软件
+2. 运行一个软件镜像在一个容器内
+3. 在Docker Hub上浏览Docker镜像
+4. 创建你自已的镜像并运行它在一个容器内
+5. 创建一个Docker Hub账号并创建一个镜像仓库
+6. 创建一个你自已的镜像
+7. 推送你的镜像到Docker Hub上供其它人使用
+
+(2) 得到Docker、安装Docker、验证你的安装
+http://docs.master.dockerproject.org/engine/getstarted/step_one/
+
+# docker ps -a
+显示所有的容器在运行的系统上
+
+
+(3) 寻找故障排除帮助
+Looking for troubleshooting help
+
+http://docs.master.dockerproject.org/toolbox/faqs/troubleshoot/
+
+(4) 学习关于镜像和容器
+http://docs.master.dockerproject.org/engine/getstarted/step_two/
+
+一个镜像是一个文件系统和参数被使用在运行时，它没有声明、绝不改变.
+一个容器是基于一个镜像运行的一个实例，当你运行docker命令行
+
+拆解命令
+# docker run hello-world
+docker -》 告诉你的操作系统你使用Docker程序
+run -》 一个子命令创建并运行一个Docker容器
+hello-world -》 告诉Docker加载镜像到你的容器
+
+1. 查看如果你有hello-world 软件镜像
+2. 从Docker Hub下载这个镜像
+3. 加载这个镜像到这个容器并运行它
+
+取决于它是怎样构建的，一个镜像可能运行一个简单、简单的命令，然后退出，就比如"Hello-World"
+
+一个Docker镜像能够做很多事情，一个镜像能够启动一个复杂的数据库，等待你添加数据，以后存储数据，供其它人使用.
+
+
+(5) 搜索并运行镜像
+http://docs.master.dockerproject.org/engine/getstarted/step_three/
+
+世界各地的人们都在创建镜像，你能找到镜像通过浏览Docker Hub.
+
+Docker Hub的镜像包含个人的和商业的来自RedHat, IBM, Google
+
+1. 搜索镜像
+每个镜像仓库包含一个镜像信息，包含它是一个怎么样的软件镜像和怎样使用它.
+
+2. 运行镜像
+第一次你运行软件镜像，这个docker命令行在本地系统上查找它，如果镜像不存在，然后docker得到它从Docker hub
+
+# docker images
+
+(6) 构建自已的镜像
+http://docs.master.dockerproject.org/engine/getstarted/step_four/
+
+基于"docker/whalesay"构建自已的镜像
+
+1. 写一个Dockerfile
+2. 从你的Dockerfile构建一个镜像
+# docker build -t "mytag" .                         # 这种方式运行必须与Dockerfile同级
+# docker build mydockerbuild -t 'mytag'             # 这种方式运行Dockerfile必须在mydockerbuild目录下
+3. 学习关于构建过程
+    - 首先Docker检查以确保一切需要建立
+    - 然后Docker加载whalesay镜像，在当地已经有了这个镜像，因此Docker不需要下载它.
+    - 更新apt-get包管理器
+    - 然后Docker 安装fortunes 软件
+    - 最后，Docker完成构建并报告它的结果
+4. 基于新的镜像运行一个容器
+
+
+(7) 创建一个Docker Hub账号  及 Docker仓库介绍
+
+http://docs.master.dockerproject.org/engine/getstarted/step_five/
+
+Docker Hub是免费的，Docker需要一个名字、密码和邮件地址.
+
+Docker Hub
+https://hub.docker.com/
+
+1. 注册一个Docker Hub账号
+2. 验证你的邮件并添加仓库
+
+
+(8) 标签、推送、拉取你的镜像
+
+http://docs.master.dockerproject.org/engine/getstarted/step_six/
+
+1. 标签和推送这个镜像
+# docker login --username=zhengyscn --password=123456
+Login Succeeded
+# docker push zhengyscn/docker-whale
+
+2. 拉取你的镜像
+# docker rmi -f IMAGE-ID
+
+
+(8) 学习更多
+
+http://docs.master.dockerproject.org/engine/getstarted/last_page/
+

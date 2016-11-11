@@ -1,0 +1,34 @@
+
+## Docker Container
+
+(1) Centos7升级内核4.8.6并支持AUFS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------参考文章------------------------------------
+docker中文社区
+https://github.com/arkii/docs
+
+docker中文文档
+http://docker-doc.readthedocs.io/zh_CN/latest/
+
+docker官方英文文档
+http://docs.master.dockerproject.org/
+http://docs.master.dockerproject.org/engine/understanding-docker/
+
+docker-registry-ui
+基于flask的docker web ui仓库

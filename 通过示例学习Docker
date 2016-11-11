@@ -1,0 +1,36 @@
+
+
+(1) 在一个容器内运行Hello world
+
+http://docs.master.dockerproject.org/engine/tutorials/dockerizing/
+
+
+Docker允许你运行一个应用，创建你自已的世界，内部的容器，运行一个应用在一个容器内部使用一个简单的命令"docker run"
+
+1. 在这个命令运行完之后Docker容器就会停止
+$ docker run ubuntu /bin/echo 'Hello world'
+
+2. 运行一个交互式的容器
+$ docker run -t -i ubuntu /bin/bash
+-t # 分配一个pseudo-tty 或者 一个终端在这个新的容器内部
+-i # 允许你建立一个交互式的连接通过抓取一个容器的标准的STDIN
+
+3. 启动一个守护进程的Hello world
+$ docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+-d # 运行这个容器在后台以守护进程的方式
+
+
+
+
+
+
+
+
+
+
+(2) 运行一个简单的应用
+(3) 构建你自已的镜像
+(4) 网络容器
+(5) 在容器内管理数据
+(6) 存储镜像在Docker Hub

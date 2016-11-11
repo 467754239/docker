@@ -1,0 +1,50 @@
+
+1. 查看当前系统版本、内核版本及是否支持AUFS.
+# cat /etc/centos-release
+CentOS Linux release 7.2.1511 (Core)
+# uname -r
+3.10.0-327.36.3.el7.x86_64
+# grep aufs /etc/filesystems 
+
+2. 添加kernel-ml-auf对应的YUM源
+# wget -P /etc/yum.repos.d/ https://yum.spaceduck.org/kernel-ml-aufs/kernel-ml-aufs.repo
+
+3. 升级当前内核
+# yum -y remove kernel-headers kernel-tools kernel-tools-libs
+# yum -y install kernel-ml-aufs kernel-ml-aufs-headers kernel-ml-aufs-devel kernel-ml-aufs-tools-libs-devel perf
+
+4. 查看当前的grub(所支持的kernel版本)
+# awk -F\' '$1=="menuentry " {print $2}' /etc/grub2.cfg
+CentOS Linux (4.8.6-1.el7.centos.x86_64) 7 (Core)       # 新内核版本
+CentOS Linux (3.10.0-327.36.3.el7.x86_64) 7 (Core)
+CentOS Linux, with Linux 3.10.0-123.el7.x86_64
+CentOS Linux, with Linux 0-rescue-03b619603fe6463fbed5c815cc33601a
+
+5. 将0设置为启动
+# grub2-set-default 0
+
+6. 扩展支持多kernel 
+# sed -i '/\[main\]/a exclude=kernel*' /etc/yum.conf
+
+7. 重新启动服务并加载新的内核
+# reboot
+
+8. 查看版本
+# cat /proc/version 
+Linux version 4.8.6-1.el7.centos.x86_64 (mockbuild@buildbox.local) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) ) #1 SMP Mon Oct 31 16:45:16 EDT 2016
+
+9. 
+# mkdir /etc/systemd/system/docker.service.d
+# cat > /etc/systemd/system/docker.service.d/docker_boot.conf <<-EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -D -s aufs
+EOF
+
+10. 重新加载docker服务
+# systemctl daemon-reload
+# systemctl start docker.service
+
+11. 验证是否支持aufs.
+# docker info | grep 'Storage Driver'
+Storage Driver: aufs
