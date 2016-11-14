@@ -21,16 +21,178 @@ $ docker run -d ubuntu /bin/sh -c "while true; do echo hello world; sleep 1; don
 -d # 运行这个容器在后台以守护进程的方式
 
 
+长字符串被称为"container ID"，它唯一标识了一个容器，因此我能用它进行各种操作，"container ID"是一个长的、不灵活的.
+
+$ docker ps   # 查询Docker进程信息关于所有的容器
+CONTAINER ID  IMAGE         COMMAND               CREATED        STATUS       PORTS NAMES
+1e5535038e28  ubuntu  /bin/sh -c 'while tr  2 minutes ago  Up 1 minute        insane_babbage
+
+CONTAINER ID    # 较短的容器ID
+
+Docker如果不指定名字会自动生产一个名字.
+
+查看容器的标准输出 也即是容器的日志
+# docker logs container_name
+
+优雅的停止容器
+# docker stop container_name
 
 
-
-
+注意：
+交互式一旦Bash shell执行完成后退出，容器就停止了.
 
 
 
 
 (2) 运行一个简单的应用
+
+$ docker run -d -P training/webapp python app.py
+映射必要的网络端口在容器内部到我们宿主机，为了让我们查看我们的WEB应用，换句话说就是容器内部的端口都要映射到宿主机上.
+
+
+# docker run -itd -p 8888:5000 --name='zhengyscn-flask' training/webapp python app.py
+
+
+基于docker容器技术在进行应用升级的时候有两种方案
+1. stop -> replace -> start
+2. container1 -> container2 -> container1
+
+
+
 (3) 构建你自已的镜像
+
+1. 管理和处理在Docker主机上的本地镜像
+2. 创建基础镜像
+3. 升级镜像到Docker Hub仓库
+
+- 他们来自什么库,例如ubuntu。
+- 每个图像的标记,例如14.04。
+- 每个图像的图像ID。
+
+
+
+$ docker run -t -i ubuntu:14.04 /bin/bash
+$ docker run -t -i ubuntu:12.04 /bin/bash
+$ docker run -t -i ubuntu:latest /bin/bash
+
+指定镜像的tag是有用的在故障诊断和调试
+
+
+镜像都是分层的
+
+Docker的特点就是有很多人创建了很多镜像用于各种各样的目的.
+
+
+有两种方法可以更新和创建镜像
+1. 你可以更新一个已经创建好的镜像容器并提交它到另一个镜像
+2. 你可以使用Dockefile指令来创建一个镜像
+
+$ apt-get install ruby2.0
+$ /usr/bin/ruby2.0 -v
+$ gem install json   # (http://www.linuxdiyf.com/linux/25762.html)
+$ docker commit -m "Added json gem" -a "Kate Smith" 0b2616b0e5a8 ouruser/sinatra:v2
+使用docker commit是一个非常简单的方法扩展一个镜像，但是有点繁琐并且不容易共享一个镜像的开发过程对于一个团队.
+相反的你可以使用docker build命令 从头构建一个镜像的过程
+
+注意：
+一个镜像不能超过127层
+
+在你提交或者构建之后 你也可以添加一个tag到一个已经存在镜像上.可以使用docker tag命令为镜像添加tag
+在一个已经存在的镜像上设置tag
+
+# docker tag e36fdb718858 zhengyscn/sinatra:devel
+
+
+
+
+
 (4) 网络容器
+
+容器命名的两种方式
+1. 
+2. 
+
+
+$ docker run -d -P --name web training/webapp python app.py
+
+默认Docker提供了两种网络驱动
+1. bridge       # 仅限于单个主机运行Docker引擎
+2. overlay      # 可以包含多个主机是一种高级的用法
+
+默认支持三种网络 null、host、bridge
+$ docker network ls
+
+bridge是一种特殊的网络，默认都是以这种方式启动
+
+指定zhengyscn-flask容器断开网络连接
+$ docker network disconnect bridge zhengyscn-flask
+
+网络是用来隔离容器从其它容器
+
+创建你自已的桥接网络
+# docker network create -d bridge my-bridge-network
+# docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+ecfa0431d07a        bridge              bridge              local               
+e19104e4b1b3        host                host                local               
+302f9c21f27a        my-bridge-network   bridge              local               
+8fa730398563        none                null                local               
+1c2188e00aad        zhengyscn-flask     bridge              local 
+# docker network inspect my-bridge-network
+$ docker network connect my-bridge-network zhengyscn-flask
+
+
+$ docker network create -d bridge my-bridge-network
+-d  # 告诉Docker使用bridge驱动
+
+
+# 添加一个容器到一个网络
+构建一个网络为容器提供完全的隔离，你第一次使用容器的时候可以指定容器网络
+$ docker run -d --network=my-bridge-network --name db training/postgres
+
+
 (5) 在容器内管理数据
+
+有两种方式Docker引擎管理数据
+1. 数据卷
+2. 数据卷容器
+
+数据卷是一个特别指定的目录内的一个或多个容器绕过“Union File System”
+数据卷持续提供一些有用的特性或共享数据:
+1. 当容器创建时卷被初始化，如果容器的基础镜像包含数据在指定的挂在点上，如果数据存在将被拷贝到新卷上，卷被初始化.
+2. 数据量之间可以共享和重用数据
+3. 直接更改数据
+4. 当更新一个镜像时，更新数据卷不被包含
+5. 数据量持续即使容器被删除
+
+数据卷用来存储数据，独立于容器的声明周期，docker不会自动删除卷当你删除一个容器时，也不会垃圾回收数据卷
+
+
+
+
+增加数据卷
+$ docker run -d -P --name web -v ~/data/v1:/webapp training/webapp python app.py
+如果/webapp目录在容器内已经存在，那么将会别覆盖但是不会删除，一旦mount被移除，内容依然可以被访问，
+这是mount命令预期的行为
+
+容器中卷目录(container-dir)必须是绝对路径，宿主机(host-dir)可以是相对路径
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (6) 存储镜像在Docker Hub

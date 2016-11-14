@@ -1,10 +1,13 @@
 # Docker Container
 > https://www.docker.com
 
-(1) Centos7升级内核4.8.6并支持AUFS.
-(2) Docker软件包安装安装
-(3) 开始探究Docker
-(4) 通过示例学习Docker
+- Centos7升级内核4.8.6并支持AUFS.
+- Cgroups介绍
+- LXC介绍
+- namespace介绍
+- Docker软件包安装安装
+- 开始探究Docker
+- 通过示例学习Docker
 
 
 
