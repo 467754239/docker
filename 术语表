@@ -1,0 +1,111 @@
+
+
+术语表
+http://docs.master.dockerproject.org/engine/reference/glossary/#union-file-system
+
+Docker项目周围的被使用的术语列表
+
+(1) aufs
+aufs(高级的多层联合文件系统)是一个文件系统支持Linux文件系统后端存储，它实现了union对于linux文件系统的挂载.
+
+(2) Base image
+没有父母的基础镜像
+
+(3) boot2docker
+boot2docker是一个轻量级的Linux发行版运行在Docker容器中.
+boot2docker管理MAC和Windows过时工具，取而代之的是docker-machine，你可以安装Docker Toolbox.
+
+(4) btrfs
+btrfs(是一个B-tree的文件系统)是一个文件系统支持Linux文件系统存储后端，这是一个"copy-on-write"文件系统.
+
+(5) build
+build是一个使用Dockerfile处理Docker镜像的过程，这个build使用Dockerfile和context，
+context是文件的集合在目录内及哪个镜像被使用.
+
+(6) cgroups
+cgroups 是一个Linux文件系统特性 限制、占用、隔离的资源使用情况 (CPU, memory, disk I/O, network, etc.) 等收集过程
+Docker依赖并且控制和隔离资源限制.
+
+
+(7) Compose
+compose是一个工具用来定义和运行复杂的应用程序和docker，对于compose，你使用一个简单的文件定义了多个容器。
+通俗的来说就是Dockerfile是针对一个容器的，而compose是针对多个容器的.
+
+
+(8) container
+一个容器是一个正在运行的实例基于一个docker镜像
+一个Docker包含以下
+1. 一个Docker镜像
+2. 执行环境变量
+3. 一组标准的指令集合
+这个概念是借用了集装箱，它定义了一个全球范围内的运输货物，docker定义了一个标准的ship软件
+
+(9) data volume
+数据卷是一个特别指定的目录在一个或多个容器绕过"Union File System"
+数据量是用来保存数据，独立于容器的生命周期，
+Docker不会自动删除卷当你删除一个容器时，它不会垃圾回收.
+
+(10) Docker
+1. Docker项目作为一个整体，这是一个开发平台，管理到开发、传输和运行应用.
+2. Docker守护进程在宿主机上处理正在运行的去管理镜像和容器.
+
+(11) Docker Hub
+docker集中资源和及其组件一起工作，它提供了以下服务
+1. Docker镜像主机
+2. 用户认证
+3. 自动的镜像构建和工作流工具，如果构建触发及web hook
+4. 集成了GitHub 和 Bitbucket
+
+(12) Dockerfile
+一个Dockerfile是一个文本文档包含了所有的命令通常你会手动执行是为了构建一个Docker镜像，
+Docker能够自动的构建镜像从一个Dockerfile中读指令.
+
+(13) filesystem
+文件系统是操作系统的方法使用命名文件和分配位置有效的存储和检索.
+Linux：ext4, aufs, btrfs, zfs
+Windows：NTFS
+OS X：HFS+
+
+(14) image
+Docker镜像是一个基础的容器，
+一个镜像是一个有序集合根文件系统的改变和相应的执行参数在一个容器中使用运行时.
+一个镜像是分层的文件系统一层一层的推挤起来，
+一个镜像没有改变，它永远不会改变.
+
+(15) libcontainer
+
+(17) libnetwork
+
+(18) link
+
+(19) Machine
+
+(20) overlay network driver
+
+(21) overlay storage driver
+
+(22) registry
+
+(23) repository
+一个仓库是docker镜像的集合，一个仓库可以被推到一个共享服务器注册表。
+仓库中不同的镜像可以使用标签标记.
+
+(24) Swarm
+
+(25) tag
+一个标签是一个label应用到一个Docker镜像在一个仓库，在仓库中标签是用来区别各种各样的镜像与其它的.
+
+(26) Toolbox
+Docker Toolbox是 Mac and Windows安装的应用程序.
+
+(27) Union file system
+联合文件系统
+Union file systems, or UnionFS, 是一个文件系统，通过创建层、使它们非常轻量级和快速，
+Docker使用联合文件系统提供了容器的构建块.
+
+(28) Virtual Machine
+
+
+
+
+

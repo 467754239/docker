@@ -167,32 +167,83 @@ $ docker run -d --network=my-bridge-network --name db training/postgres
 
 数据卷用来存储数据，独立于容器的声明周期，docker不会自动删除卷当你删除一个容器时，也不会垃圾回收数据卷
 
+数据卷是被设计用来持久化数据的，它的生命周期独立于容器，Docker不会在容器被删除后自动删除数据卷，
+并且也不存在垃圾回收这样的机制来处理没有任何容器引用的数据卷
 
 
-
-增加数据卷
-$ docker run -d -P --name web -v ~/data/v1:/webapp training/webapp python app.py
+## 数据卷
+$ docker run -d -P --name web -v ~/data/v1:/webapp:rw training/webapp python app.py
 如果/webapp目录在容器内已经存在，那么将会别覆盖但是不会删除，一旦mount被移除，内容依然可以被访问，
 这是mount命令预期的行为
-
+可以指定挂载后的权限 rw | ro |
 容器中卷目录(container-dir)必须是绝对路径，宿主机(host-dir)可以是相对路径
 
 
+## 数据卷容器（由于flocker插件的问题 没有能成功 标记）
+如果你有一些持续更新的数据需要在容器之间共享，最好创建数据卷容器。
+
+---》 Flocker plugin
+
+$ docker volume create -d flocker --name my-named-volume -o size=2GB
+    -d：指定卷驱动名 默认是local
+    --name：指定卷名
+$ docker run -d -P --volume-driver=flocker -v my-named-volume:/opt/webapp --name web training/webapp python app.py
+$ docker run -d -P -v my-named-volume:/opt/webapp --name web training/webapp python app.py
+
+挂载一个主机的文件作为一个数据卷
+$ docker run --rm -it -v ~/.bash_history:/root/.bash_history ubuntu /bin/bash
+
+
+## 创建并挂载一个数据卷容易
+$ docker create -v /dbdata --name dbstore training/postgres /bin/true   # 创建但是没有运行
+$ docker run -d --volumes-from dbstore --name db1 training/postgres
+$ docker run -d --volumes-from dbstore --name db2 training/postgres
+
+and
+$ docker run -d --name db3 --volumes-from db1 training/postgres
+
+注意：
+如果你移除容器，挂载卷，包括这个最初的dbstore容器 或 后续的db1、db2，这些卷都不会自动删除从磁盘上，
+你必须显示的执行docker rm -v命令才能被删除，有利于升级、迁移卷.
+
+
+## 备份、恢复、迁移数据卷
+
+$ mkdir /backup
+$ cd /backup
+$ docker run --rm --volumes-from dbstore -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /dbdata
+这里你能启动一个新的容器并从dbstore 容器里挂载这个卷，你也能挂载本地目录作为/backup.
+最后你也能使用一个命令tar备份 dbstore卷的内容到一个back.tar文件在我的/backup目录，当命令执行完成，容器就停止了
+只剩下一个备份的dbdata卷.
+
+恢复
+$ docker run -v /dbdata --name dbstore2 ubuntu /bin/bash
+
+$ docker run -d --volumes-from dbstore2 -v $(pwd):/backup ubuntu bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1 && tail -f /etc/hosts"
 
 
 
 
+## 移除数据卷
+一个Docker数据卷仍然存在在一个数据卷被删除后，你可以创建命名卷和匿名卷，
+命名卷有一个特定的源代码形式以外的容器，例如“awesome:/bar”
+匿名卷没有指定源，当这个容器被删除的时候，你应该指导Docker守护进程去清除匿名卷，去做使用“--rm”
+$ docker run --rm -v /foo -v awesome:/bar busybox top
+这个命令创建一个匿名/foo卷，
+当容器被移除的时候，Docker移除/foo这个卷，但是不会移除awesome 卷
 
+重要的技巧使用共享卷
+多个容器能够共享一个或多个数据卷，然而，多个数据卷能写一个单独的数据卷能够引起数据腐败，
+确定你的应用被标记去写到共享存储.
 
-
-
-
-
-
-
+数据卷是直接从docker主机访问的，这意味着可以读和写对通过标准的linux工具，
+在大多数情况下你不应该这样做，因为它会导致数据损坏，如果你的容器和应用程序都不知道你的直接访问.
 
 
 
 
 
 (6) 存储镜像在Docker Hub
+
+自动构建私有仓库
+

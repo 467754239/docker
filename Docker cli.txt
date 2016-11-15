@@ -1,0 +1,61 @@
+docker version
+docker images	# 查看本地镜像
+docker run
+	-i	# 交互式 保持STDIN 打开一个事件即使不附加
+	-t	# 分配一个pseudo-TTY
+	-d	# 在后台运行容器并打印containter ID
+	-P	# 公开所有容器内部的端口到宿主机的随机端口上 不需要手动指定映射的端口号
+	-p	# 公开一个容器的端口到主机的
+	-v	# 绑定挂在卷
+	--volume-driver	# 可选的容器卷驱动
+	--volumes-from	# 挂载卷从一个指定的容器
+	--rm	# 当容器存在时自动的移除这个容器
+docker ps
+	-l	# 显示最近的一个刚启动正在运行的容器信息
+	-a	# 显示包括停止、正在启动的所有容器的信息
+docker logs container_name
+	-f	# 类似于tail -f的功能
+docker stop container_name
+docker top container_name	# 显示正在运行的一个容器的进程
+docker Inspecting  container_name	# 返回容器的底层信息，镜像和任务 JSON格式输出
+docker search image_name	# 从Docker Hub上搜索指定的镜像
+docker pull image_name		# 拉取、下载镜像 
+docker commit			# 创建一个新的镜像从一个容器的改变.
+	-a	# 作者
+	-m	# 提交信息
+docker build			# 从一个Dockerfile中构建一个镜像
+	-t	# 名称和可选的标记名称 name:tag
+docker tag	# 标记一个镜像到一个仓库
+docker rmi REPOSITORY	# 删除指定镜像
+docker network		# 管理docker网络
+	ls	# 列出所有的网络
+	rm	# 移除一个或多个网络
+	inspect	# 显示一个或多个网络的详细信息
+	disconnect # 从一个网络断开一个容器
+	create	# 连接一个容器到一个网络
+docker rm			# 移除一个或多个容器
+	-v	# 移除容器关联的卷
+	-f	# 强制移除一个正在运行的从其 SIGKILL信号
+
+docker volume		# 管理docker卷
+	create	# 创建一个卷
+	inspect	# 显示一个或多个卷的详细信息
+	ls	# 列出卷
+	rm	# 移除一个或多个卷
+	
+
+
+command reference
+http://docs.master.dockerproject.org/engine/reference/commandline/run/
+
+Docker Run Reference.
+http://docs.master.dockerproject.org/engine/reference/run/
+
+dockviz: Visualizing Docker Data
+https://github.com/justone/dockviz
+
+image layers site 
+https://imagelayers.io/
+
+Dockerfile Best Practices guide.(Dockerfile最佳实践指南)
+http://docs.master.dockerproject.org/engine/userguide/eng-image/dockerfile_best-practices/

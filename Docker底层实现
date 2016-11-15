@@ -1,0 +1,39 @@
+
+
+# 底层的核心技术
+Namespace           # 名字空间
+Control groups      # 控制组
+Union file systems
+Container format    # 容器格式
+
+
+# 传统的虚拟机
+通过在宿主机上运行hypervisor来模拟一整套完整的硬件环境提供给虚拟机的操作系统.
+
+操作系统 ---> 内核、文件系统、网络、PID、UID、IPC、内存、硬盘、CPU 等等
+
+虚拟化要实现 "资源的限制" 以及 "隔离".
+
+Container 利用Namesapce来做权限的隔离控制，Cgroups来做资源的分配.
+
+
+
+# Docker基本架构
+
+C/S架构
+
+docker daemon守护进程 -> 服务端
+docker cli -> 客户端
+之间通过docker.sock进行信息的传递
+用户通过docker命令行和docker daemon进行通信.
+
+# 名字空间 Namespace
+名字空间是linux kernel的一个特性
+名字空间保证了容器之间彼此互不影响.
+
+
+namespace、pid、net、ipc、mnt、uts、user
+
+
+# cgroups 控制组
+对共享资源进行隔离、限制、审计等
