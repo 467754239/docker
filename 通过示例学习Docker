@@ -245,5 +245,32 @@ $ docker run --rm -v /foo -v awesome:/bar busybox top
 
 (6) 存储镜像在Docker Hub
 
-自动构建私有仓库
+使用Docker Hub简化和增加你的工作流.
+Docker Hub需要提供身份认证、工作组结构、工作流工具，像人并建立触发器,和隐私等工具私人存储库用于存储镜像你不想公开分享。
+
+docker search | pull | login | push
+
+- 创建账号并登陆
+$ docker login
+linux -> login命令存储你的Docker ID认证凭证在“$HOME/.docker/config.json”文件中，
+Windows cmd -> "%HOME%\.docker\config.json"
+PowerShell -> "$env:Home\.docker\config.json"
+
+一旦你从命令行登陆，你就能commit和push 子引擎到你交互式改变你的位置在Docker Hub.
+
+搜索镜像
+# docker search centos --limit 2
+NAME                   DESCRIPTION                                   STARS     OFFICIAL   AUTOMATED
+centos                 The official build of CentOS.                 2824      [OK]       
+blacklabelops/centos   CentOS Base Image! Built and Updates Daily!   1                    [OK]
+
+解释
+blacklabelops/centos 和 centos
+blacklabelops/centos来自一个用户的公开仓库，名字为tianon/
+centos没有明确的列出一个仓库 这就意味着它来自可信任的高级的“Official Repositories.”名称空间.
+字符'/'可以用来区分镜像名中 用户和仓库
+
+- 指定版本 或 最新的版本
+- 参与到Docker Hub
+- 推送一个仓库到Docker Hub
 
