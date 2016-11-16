@@ -1,50 +1,63 @@
-docker version
-docker images	# ²é¿´±¾µØ¾µÏñ
-docker run
-	-i	# ½»»¥Ê½ ±£³ÖSTDIN ´ò¿ªÒ»¸öÊÂ¼ş¼´Ê¹²»¸½¼Ó
-	-t	# ·ÖÅäÒ»¸öpseudo-TTY
-	-d	# ÔÚºóÌ¨ÔËĞĞÈİÆ÷²¢´òÓ¡containter ID
-	-P	# ¹«¿ªËùÓĞÈİÆ÷ÄÚ²¿µÄ¶Ë¿Úµ½ËŞÖ÷»úµÄËæ»ú¶Ë¿ÚÉÏ ²»ĞèÒªÊÖ¶¯Ö¸¶¨Ó³ÉäµÄ¶Ë¿ÚºÅ
-	-p	# ¹«¿ªÒ»¸öÈİÆ÷µÄ¶Ë¿Úµ½Ö÷»úµÄ
-	-v	# °ó¶¨¹ÒÔÚ¾í
-	--volume-driver	# ¿ÉÑ¡µÄÈİÆ÷¾íÇı¶¯
-	--volumes-from	# ¹ÒÔØ¾í´ÓÒ»¸öÖ¸¶¨µÄÈİÆ÷
-	--rm	# µ±ÈİÆ÷´æÔÚÊ±×Ô¶¯µÄÒÆ³ıÕâ¸öÈİÆ÷
-docker ps
-	-l	# ÏÔÊ¾×î½üµÄÒ»¸ö¸ÕÆô¶¯ÕıÔÚÔËĞĞµÄÈİÆ÷ĞÅÏ¢
-	-a	# ÏÔÊ¾°üÀ¨Í£Ö¹¡¢ÕıÔÚÆô¶¯µÄËùÓĞÈİÆ÷µÄĞÅÏ¢
-docker logs container_name
-	-f	# ÀàËÆÓÚtail -fµÄ¹¦ÄÜ
-docker stop container_name
-docker top container_name	# ÏÔÊ¾ÕıÔÚÔËĞĞµÄÒ»¸öÈİÆ÷µÄ½ø³Ì
-docker Inspecting  container_name	# ·µ»ØÈİÆ÷µÄµ×²ãĞÅÏ¢£¬¾µÏñºÍÈÎÎñ JSON¸ñÊ½Êä³ö
-docker search image_name	# ´ÓDocker HubÉÏËÑË÷Ö¸¶¨µÄ¾µÏñ
-docker pull image_name		# À­È¡¡¢ÏÂÔØ¾µÏñ 
-docker commit			# ´´½¨Ò»¸öĞÂµÄ¾µÏñ´ÓÒ»¸öÈİÆ÷µÄ¸Ä±ä.
-	-a	# ×÷Õß
-	-m	# Ìá½»ĞÅÏ¢
-docker build			# ´ÓÒ»¸öDockerfileÖĞ¹¹½¨Ò»¸ö¾µÏñ
-	-t	# Ãû³ÆºÍ¿ÉÑ¡µÄ±ê¼ÇÃû³Æ name:tag
-docker tag	# ±ê¼ÇÒ»¸ö¾µÏñµ½Ò»¸ö²Ö¿â
-docker rmi REPOSITORY	# É¾³ıÖ¸¶¨¾µÏñ
-docker network		# ¹ÜÀídockerÍøÂç
-	ls	# ÁĞ³öËùÓĞµÄÍøÂç
-	rm	# ÒÆ³ıÒ»¸ö»ò¶à¸öÍøÂç
-	inspect	# ÏÔÊ¾Ò»¸ö»ò¶à¸öÍøÂçµÄÏêÏ¸ĞÅÏ¢
-	disconnect # ´ÓÒ»¸öÍøÂç¶Ï¿ªÒ»¸öÈİÆ÷
-	create	# Á¬½ÓÒ»¸öÈİÆ÷µ½Ò»¸öÍøÂç
-docker rm			# ÒÆ³ıÒ»¸ö»ò¶à¸öÈİÆ÷
-	-v	# ÒÆ³ıÈİÆ÷¹ØÁªµÄ¾í
-	-f	# Ç¿ÖÆÒÆ³ıÒ»¸öÕıÔÚÔËĞĞµÄ´ÓÆä SIGKILLĞÅºÅ
 
-docker volume		# ¹ÜÀídocker¾í
-	create	# ´´½¨Ò»¸ö¾í
-	inspect	# ÏÔÊ¾Ò»¸ö»ò¶à¸ö¾íµÄÏêÏ¸ĞÅÏ¢
-	ls	# ÁĞ³ö¾í
-	rm	# ÒÆ³ıÒ»¸ö»ò¶à¸ö¾í
+Dockerå‘½ä»¤è¡Œé“¾æ¥
+https://docker.github.io/engine/reference/commandline/commit/#DocumentationText
+
+--- å‘½ä»¤è¡Œ ---
+docker version
+docker images	# æŸ¥çœ‹æœ¬åœ°é•œåƒ
+docker run
+	-i	# äº¤äº’å¼ ä¿æŒSTDIN æ‰“å¼€ä¸€ä¸ªäº‹ä»¶å³ä½¿ä¸é™„åŠ 
+	-t	# åˆ†é…ä¸€ä¸ªpseudo-TTY
+	-d	# åœ¨åå°è¿è¡Œå®¹å™¨å¹¶æ‰“å°containter ID
+	-P	# å…¬å¼€æ‰€æœ‰å®¹å™¨å†…éƒ¨çš„ç«¯å£åˆ°å®¿ä¸»æœºçš„éšæœºç«¯å£ä¸Š ä¸éœ€è¦æ‰‹åŠ¨æŒ‡å®šæ˜ å°„çš„ç«¯å£å·
+	-p	# å…¬å¼€ä¸€ä¸ªå®¹å™¨çš„ç«¯å£åˆ°ä¸»æœºçš„
+	-v	# ç»‘å®šæŒ‚åœ¨å·
+	--volume-driver	# å¯é€‰çš„å®¹å™¨å·é©±åŠ¨
+	--volumes-from	# æŒ‚è½½å·ä»ä¸€ä¸ªæŒ‡å®šçš„å®¹å™¨
+	--rm	# å½“å®¹å™¨å­˜åœ¨æ—¶è‡ªåŠ¨çš„ç§»é™¤è¿™ä¸ªå®¹å™¨
+docker ps
+	-l	# æ˜¾ç¤ºæœ€è¿‘çš„ä¸€ä¸ªåˆšå¯åŠ¨æ­£åœ¨è¿è¡Œçš„å®¹å™¨ä¿¡æ¯
+	-a	# æ˜¾ç¤ºåŒ…æ‹¬åœæ­¢ã€æ­£åœ¨å¯åŠ¨çš„æ‰€æœ‰å®¹å™¨çš„ä¿¡æ¯
+docker logs container_name
+	-f	# ç±»ä¼¼äºtail -fçš„åŠŸèƒ½
+docker stop container_name
+docker top container_name	# æ˜¾ç¤ºæ­£åœ¨è¿è¡Œçš„ä¸€ä¸ªå®¹å™¨çš„è¿›ç¨‹
+docker Inspecting  container_name	# è¿”å›å®¹å™¨çš„åº•å±‚ä¿¡æ¯ï¼Œé•œåƒå’Œä»»åŠ¡ JSONæ ¼å¼è¾“å‡º
+docker search image_name	# ä»Docker Hubä¸Šæœç´¢æŒ‡å®šçš„é•œåƒ
+docker pull image_name		# æ‹‰å–ã€ä¸‹è½½é•œåƒ 
+docker commit			# åˆ›å»ºä¸€ä¸ªæ–°çš„é•œåƒä»ä¸€ä¸ªå®¹å™¨çš„æ”¹å˜.
+	-a	# ä½œè€…
+	-m	# æäº¤ä¿¡æ¯
+docker build			# ä»ä¸€ä¸ªDockerfileä¸­æ„å»ºä¸€ä¸ªé•œåƒ
+	-t	# åç§°å’Œå¯é€‰çš„æ ‡è®°åç§° name:tag
+docker tag	# æ ‡è®°ä¸€ä¸ªé•œåƒåˆ°ä¸€ä¸ªä»“åº“
+docker rmi REPOSITORY	# åˆ é™¤æŒ‡å®šé•œåƒ
+docker network		# ç®¡ç†dockerç½‘ç»œ
+	ls	# åˆ—å‡ºæ‰€æœ‰çš„ç½‘ç»œ
+	rm	# ç§»é™¤ä¸€ä¸ªæˆ–å¤šä¸ªç½‘ç»œ
+	inspect	# æ˜¾ç¤ºä¸€ä¸ªæˆ–å¤šä¸ªç½‘ç»œçš„è¯¦ç»†ä¿¡æ¯
+	disconnect # ä»ä¸€ä¸ªç½‘ç»œæ–­å¼€ä¸€ä¸ªå®¹å™¨
+	create	# è¿æ¥ä¸€ä¸ªå®¹å™¨åˆ°ä¸€ä¸ªç½‘ç»œ
+docker rm			# ç§»é™¤ä¸€ä¸ªæˆ–å¤šä¸ªå®¹å™¨
+	-v	# ç§»é™¤å®¹å™¨å…³è”çš„å·
+	-f	# å¼ºåˆ¶ç§»é™¤ä¸€ä¸ªæ­£åœ¨è¿è¡Œçš„ä»å…¶ SIGKILLä¿¡å·
+
+docker volume		# ç®¡ç†dockerå·
+	create	# åˆ›å»ºä¸€ä¸ªå·
+	inspect	# æ˜¾ç¤ºä¸€ä¸ªæˆ–å¤šä¸ªå·çš„è¯¦ç»†ä¿¡æ¯
+	ls	# åˆ—å‡ºå·
+	rm	# ç§»é™¤ä¸€ä¸ªæˆ–å¤šä¸ªå·
 	
 
 
+$ docker commit -a 'zhengyscn <zhengyscn@gmail.com>' -m 'centos vim' 44f0357bad7b centos-vim
+$ docker tag 5ce3cfbd1c14 zhengyscn/centos-vim:version1.0
+
+
+
+
+
+============================================ å‚è€ƒæ–‡ç« é“¾æ¥ ======================================================
 command reference
 http://docs.master.dockerproject.org/engine/reference/commandline/run/
 
@@ -57,5 +70,5 @@ https://github.com/justone/dockviz
 image layers site 
 https://imagelayers.io/
 
-Dockerfile Best Practices guide.(Dockerfile×î¼ÑÊµ¼ùÖ¸ÄÏ)
+Dockerfile Best Practices guide.(Dockerfileæœ€ä½³å®è·µæŒ‡å—)
 http://docs.master.dockerproject.org/engine/userguide/eng-image/dockerfile_best-practices/

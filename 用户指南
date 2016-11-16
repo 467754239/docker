@@ -1,0 +1,134 @@
+
+
+引擎用户指南
+http://docs.master.dockerproject.org/engine/userguide/intro/
+
+(1) 介绍
+
+1. Dockerize 你的应用
+2. 运行你自已的容器
+3. 构建容器镜像
+4. 分享你的docker镜像为其他人
+5. 和更多
+
+
+
+
+
+
+(2) 处理镜像
+
+
+实战写Dockerfiles
+http://docs.master.dockerproject.org/engine/userguide/eng-image/dockerfile_best-practices/
+
+
+Docker可以自动构建镜像通过读取Dockerfile指令，Dockerfile是一个文本文件里面包含了所有的命令。
+基于一个给定的镜像，Dockerfile有特定的格式和使用一组特定的指令。
+
+Dockerfile详细的可以参考这篇文章
+http://docs.master.dockerproject.org/engine/reference/builder/
+这篇文档提供了最好了实战和推荐的方式，
+告诉我们应该遵守这些语法规定.
+
+
+buildpack-deps ---> Dockerfile
+https://github.com/docker-library/buildpack-deps/blob/master/jessie/Dockerfile
+
+
+## 一般的指导方针和建议
+
+### 容器应该是短暂的
+容器的产生是基于你的Dockerfile镜像，定义尽可能短暂，这就意味着，它可能会停下来，被摧毁，一个新的构建和实施绝对最小的设置和配置。
+
+### 使用一个Dockerfile文件
+在大多数情况下,最好把每个Dockerfile放在一个空的目录。然后,添加到该目录只有Dockerfile构建所需的文件。
+增加构建的性能，你可以通过添加“.dockerignore”文件来排除文件和目录，这个文件支持排除模式类似于".gitignore"文件
+
+### 避免安装不必要的包
+为了降低复杂性,依赖,文件大小,和构建时间,你应避免安装额外的或不必要的包。
+“例如,您不需要在一个数据库镜像中包含一个文本编辑器。
+
+### 每个容器仅运行一个进程
+在几乎所有情况下,您应该只运行一个进程在一个容器中。解耦应用到多个容器使其更容易水平扩展和重用容器。
+如果服务依赖于另一个服务,利用容器连文档(http://docs.master.dockerproject.org/engine/userguide/networking/default_network/dockerlinks/)。
+
+### 最小化层数
+你需要找到平衡的可读性(长期可维护性)Dockerfile，最小化它使用的层数.
+
+### 分类多行参数
+只要有可能，灵活的移动由字母、数字做混合排序，这有助于你更容易的排查是否有重复的包，建议在\前都加一个空格
+RUN apt-get update && apt-get install -y \
+  bzr \
+  cvs \
+  git \
+  mercurial \
+  subversion
+
+### 构建cache
+Dockerfile中的每条指令在被执行时，都会查找现有的镜像，它可以重用，而不是创建一个新的镜像，
+在使用Dockerfile构建镜像的过程中 如果你不想要使用cache，那么你可以明确指定参数"--no-cache=true"
+1. 
+2. 在大多数情况下，只是比较Dockerfile中的指令和一个子镜像指令就足够了，然而某些指令需要更多的检查和解释。
+3. ADD 和COPY 指令，文件中的内容， 在镜像中每个文件的检查和校验和计算，文件的最后修改和上次访问时间(s)在这些校验和不考虑。
+4. 除了ADD 和COPY 指令，cache检查不会查看容器确定换种中的文件匹配。
+   比如运行一个“RUN apt-get -y update”命令 容器内的文件将被更新 这种情况即使cache被命中也不会被确定，关心的是命令行字符串自身被匹配找到。
+
+一旦cache失效，所有后来的Dockerfile命令将被生成一个新的镜像，这个cache将不会使用.
+
+
+
+## Dockerfile指令
+接下来你将要找到最为推荐的方式写各种各样的指令变量在Dockerfile中
+
+### FROM
+FROM <image>
+FROM <image>:<tag>
+FROM <image>@<digest>
+
+只要有可能，使用当前官方库作为你镜像的基础，我们建议debian镜像，因为它非常严格控制和保持最低(目前150m)，同时仍然是一个完整的分布式.
+
+### RUN
+
+### apt-get
+
+### CMD
+
+### EXPOSE
+
+### ENV
+
+### ADD or COPY
+
+### VOLUME
+
+### USER
+
+
+### WORKDIR
+
+
+### ONBUILD
+
+### 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(3) Docker存储驱动
+(4) 网络配置
+(5) 应用自定义medata

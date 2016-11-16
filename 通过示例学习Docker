@@ -273,4 +273,59 @@ centos没有明确的列出一个仓库 这就意味着它来自可信任的高�
 - 指定版本 或 最新的版本
 - 参与到Docker Hub
 - 推送一个仓库到Docker Hub
+- Docker Hub的特性
+    - 私有仓库
+    - 组织和团队
+    - 自动构建
+    - Webhooks
 
+
+
+
+
+私有仓库
+有时候你的镜像你不想公开其它人，因此Docker Hub允许你有私有仓库，私有仓库需要花费费用.
+
+组织和团队
+一个有用的私有仓库仅分享给你的组织和团队，那么你和你的团队可以合作管理私有仓库.
+
+自动构建
+自动化构建升级镜像从Docker Hub 或 Bitbucket，在Docker Hub上的目录，它的工作是通过提交hook到你选择的github或Bitbucket仓库，
+触发一个构建和升级当你推送一个提交的时候.
+
+建立一个自动化构建
+1. 创建一个Docker hub账号并登陆
+2. 
+
+
+
+
+
+Webhooks
+是一附加到你仓库和允许你触发一个事件，当一个镜像 或 更新一个镜像被推送到你仓库的时候，对于Webhooks你可以指定一个url
+和一个json payload将要被递送当一个镜像被推送的时候。
+
+更多的webhooks
+https://docs.docker.com/docker-hub/repos/#webhooks
+
+
+
+----> 推送本地镜像到远程的Docker Hub仓库
+# docker login --username zhengyscn
+Password: 
+Login Succeeded
+
+# docker images
+REPOSITORY               TAG                 IMAGE ID            CREATED             SIZE
+zhengyscn/centos-vim     version1.0          5ce3cfbd1c14        11 minutes ago      361.1 MB
+
+# docker push zhengyscn/centos-vim
+version1.0: Pulling from zhengyscn/centos-vim
+80392c6ba682: Pull complete 
+Digest: sha256:3177f142274f8876bfad8e4d439845ef03bf01ccf09b7cca837a419bde73e73c
+Status: Downloaded newer image for zhengyscn/centos-vim:version1.0
+
+推送镜像的语法
+docker push <namespace>/<image>:<tag>
+
+docker push zhengyscn/centos-vim:version1.0

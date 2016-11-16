@@ -8,6 +8,8 @@
 - [Install](./Docker软件包安装安装)
 - [Get Started with Docker](./开始使用Docker)
 - [Learn by example](./通过示例学习Docker)
+- [User Guide](./用户指南)
+- [Docker cli](./Docker cli.txt)
 
 
 ## 参考文章  
