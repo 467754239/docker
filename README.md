@@ -1,5 +1,3 @@
-# Docker Container
-
 ![截图](./images/Docker基本操作.png)
 
 ## 大纲
@@ -11,7 +9,7 @@
 - [Get Started with Docker](./开始使用Docker)
 - [Learn by example](./通过示例学习Docker)
 - [User Guide](./用户指南)
-- [build a private registry](./构建私有仓库)
+- [build private registry](./构建私有仓库)
 - [Docker cli](./Docker cli.txt)
 
 

@@ -112,23 +112,61 @@ docker run -d -p 5000:5000 --restart=always --name registry -v `pwd`/data:/var/l
 
 
 方式3：
+1. 制作自签证书
+mkdir -p ~/certs
+openssl req -newkey rsa:2048 -nodes -sha256 -keyout certs/zhengyscn.key -x509 -days 365 -out ~/certs/zhengyscn.crt
+    CN
+    BJ
+    HaiDian
+    sengled
+    opsdev
+    zhengyscn@gmail.com
+
+2. 修改一下/etc/hoss文件
+10.10.105.71 zhengyscn
+
+3. 配置本地访问
+mkdir -p /etc/docker/certs.d/zhengyscn:5000
+cp ~/certs/zhengyscn.crt /etc/docker/certs.d/zhengyscn:5000/ca.crt
+service docker restart
+
+注意：
+如果使用自签署的证书，那么所有要与Registry交互的Docker主机都需要安装zhengyscn:5000/ca.crt
+但如果你使用知名CA这一步也就可以忽略
+
+4. Registry的鉴权管理
+mkdir ~/auth
+docker run --entrypoint htpasswd registry:2 -Bbn admin 123456 > ~/auth/htpasswd
+用户名为admin
+密码123456
+
+5. 启动Secure Registry
+docker run -d -p 5000:5000 --restart=always --name registry \
+    -v `pwd`/auth:/auth \
+    -e "REGISTRY_AUTH=htpasswd" \
+    -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+    -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+    -v `pwd`/data:/var/lib/registry \
+    -v `pwd`/certs:/certs \
+    -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/zhengyscn.crt \
+    -e REGISTRY_HTTP_TLS_KEY=/certs/zhengyscn.key \
+    registry:2
+
+6. 执行docker登录
+# docker login zhengyscn:5000
+Username: admin
+Password: 
+Login Succeeded
+
+7. 管理镜像
+# curl --cacert ~/certs/zhengyscn.crt --basic --user admin:123456 https://zhengyscn:5000/v2/_catalog
+{"repositories":["centos-vim","ubuntu"]}
+# curl --cacert ~/certs/zhengyscn.crt --basic --user admin:123456 https://zhengyscn:5000/v2/ubuntu/tags/list
+{"name":"ubuntu","tags":["latest"]}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-私有仓库查看
+8. 私有仓库http接口
 curl http://localhost:5000/v2/
 curl http://localhost:5000/v2/_catalog
 
@@ -137,3 +175,21 @@ curl http://localhost:5000/v2/_catalog
 
 # curl localhost:5000/v2/centos-vim/tags/list
 {"name":"centos-vim","tags":["latest"]}
+
+
+
+
+
+构建私有仓库参考文章
+http://www.cnblogs.com/baxk/p/5225533.html
+
+搭建安全的 Docker Private Registry 完全指南
+https://www.v2ex.com/t/277174
+
+多种方式解决私有仓库构建
+http://tonybai.com/2016/02/26/deploy-a-private-docker-registry/
+
+http://stackoverflow.com/questions/25436742/deleting-images-from-a-private-docker-registry
+
+基于nginx代理的私有仓库
+http://dockone.io/article/1086
