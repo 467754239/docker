@@ -1,6 +1,8 @@
 # Docker Container
 > https://www.docker.com
 
+![截图](./images/Docker基本操作.png)
+
 - [Docker术语表](./术语表)
 - [Centos7升级内核4.8.6并支持AUFS](./Centos7升级内核4.8.6并支持AUFS)
 - [Docker底层实现](./Docker底层实现)
@@ -9,6 +11,7 @@
 - [Get Started with Docker](./开始使用Docker)
 - [Learn by example](./通过示例学习Docker)
 - [User Guide](./用户指南)
+- [build a private registry](./构建私有仓库)
 - [Docker cli](./Docker cli.txt)
 
 

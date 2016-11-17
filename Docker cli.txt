@@ -47,6 +47,8 @@ docker volume		# 管理docker卷
 	inspect	# 显示一个或多个卷的详细信息
 	ls	# 列出卷
 	rm	# 移除一个或多个卷
+docker export		# 导出的是container
+docker save 		# 导出的是镜像
 	
 
 

@@ -89,6 +89,8 @@ FROM <image>@<digest>
 只要有可能，使用当前官方库作为你镜像的基础，我们建议debian镜像，因为它非常严格控制和保持最低(目前150m)，同时仍然是一个完整的分布式.
 
 ### RUN
+支持三种形式
+
 
 ### apt-get
 
@@ -123,12 +125,58 @@ FROM <image>@<digest>
 
 
 
+--- 创建一个基础镜像
+创建一个基础的镜像使用scratch
+$ vim Dockerfile  (https://github.com/docker-library/hello-world)
+FROM scratch
+ADD hello /
+CMD ["/hello"]
 
 
+这里有很多有用的资源去帮助你写Dockerfile.
+- 完整的指南包含了所有的Dockerfile指令 
+  http://docs.master.dockerproject.org/engine/reference/builder/
+- 去帮助你写一个干净的、可读的、可维护的Dockerfile，最好的实践指南
+  http://docs.master.dockerproject.org/engine/userguide/eng-image/dockerfile_best-practices/
+- 如果你要创建一个Official Repository，一定要读完这个文档
+  https://docs.docker.com/docker-hub/official_repos/
 
+镜像管理
+Docker引擎提供了一个client，你能使用创建镜像在命令行 或者 浏览一个构建过程
+你能在一个容器中运行这些镜像 或者 公开它们为其它人去使用，
+你能创建、搜索镜像你想要的，或者 公开镜像为其它人 或者 公开镜像去管理镜像的所有元素.
+- Docker hub
+    Docker Hub负责集中用户信息、镜像、公开的名称空间，它有不同的组件
+        Web UI
+        元数据存储（评论、星、公开的仓库列表）
+        认证服务
+        标记
+这仅仅是Docker Hub的一个实例、运行和管理通过Docker Inc，公开的Dockerhub是有用的对于个人和小公司。
 
+Docker注册中心和Docker可信任的注册表
+Docker注册表是Docker生态系统的一个组件，一个注册表是一个存储、交付系统内容、Docker的名称空间镜像、有效的不同的标签版本、
+列如这个镜像“distribution/registry”，tag是2.0 and latest，用户和注册中心交互使用命令行“docker pull myregistry.com/stevvooe/batman:voice”
+你能使用一个Docker注册表去构建一个私有仓库，更多的信息关于使用一个私有仓库，可以查看https://docs.docker.com/registry/
 
 
 (3) Docker存储驱动
 (4) 网络配置
 (5) 应用自定义medata
+
+
+
+
+### 官方示例存储库
+附加资源
+
+Dockerfile参考
+http://docs.master.dockerproject.org/engine/reference/builder/
+
+更多的关于基础镜像
+http://docs.master.dockerproject.org/engine/userguide/eng-image/baseimages/
+
+更多的关于自动构建
+https://docs.docker.com/docker-hub/builds/
+
+官方指南创建存储库
+https://docs.docker.com/docker-hub/official_repos/

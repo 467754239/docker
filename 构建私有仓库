@@ -1,0 +1,139 @@
+
+
+构建私有仓库
+https://docs.docker.com/registry/
+https://docs.docker.com/registry/deploying/
+https://github.com/docker/docker-registry
+
+注册表的详细介绍
+https://docs.docker.com/registry/introduction/
+
+部署一个注册表服务的详细文档
+https://docs.docker.com/registry/deploying/
+
+私有仓库V2的api
+http://docs.master.dockerproject.org/registry/spec/api/
+
+--------------------------------------------------------------
+
+(1)它是什么
+注册表是一个无状态的,高度可伸缩的服务器端应用程序商店和允许您分发Docker镜像。这个私有仓库是开源的、遵循Apache license许可证.
+
+(2)为什么使用它
+1. 严格的控制你的镜像被存储在哪里.
+2. 管理自已的镜像
+3. 交互式的镜像存储和紧密的结合到你开发的工作流中
+
+(3)可选择
+通常你应该考虑使用另一个存储后端,而不是本地文件系统。使用存储配置选项来配置备用存储后端。
+使用其中一个会让你更容易扩展注册表,并利用存储冗余和可用性特性。
+
+(4)必须
+Docker 1.6+
+
+
+Running a domain registry
+运行一个域名的注册表
+Docker engine 要求你使用TLS安装你的仓库，类似于ssl，使其更为安全.
+
+Get a certificate 
+获得一个证书
+假设您自己的域名myregistrydomain.com,它的DNS记录指向主机运行注册表,您首先需要得到一个从CA证书。
+# cat domain.crt intermediate-certificates.pem > certs/domain.crt
+
+Let’s Encrypt
+让我们加密
+注册表支持使用加密自动获得一个browser-trusted证书。
+更多关于我们的信息加密,请参阅https://letsencrypt.org/how-it-works/和
+注册中心配置https://docs.docker.com/registry/configuration/#letsencrypt。
+
+Alternatives
+替代选择方案
+你可能想要使用自签名证书,或在一个不安全的方式使用您的注册。
+https://docs.docker.com/registry/insecure/
+
+Load Balancing Considerations
+负载均衡的考虑
+可能需要使用一个负载均衡器分发负载,终止TLS或提供高可用性。而一个完整的负载平衡设置超出了本文的范围,有一些注意事项,可以使这个过程更顺畅。
+
+最重要的方面是,负载平衡集群的注册中心必须共享相同的资源。当前版本的注册表,这意味着以下必须相同:
+1. 存储驱动
+2. HTTP加密
+3. Redis缓存如果配置
+
+如果任何这些都是不同的,注册表会有困难请求服务。作为一个例子,如果你正在使用文件系统驱动程序,所有注册表实例必须能够访问同一文件系统的根,
+这意味着他们应该在同一台机器上。
+
+其他司机,如s3或者azure,他们应该访问相同的资源,可能会共享一个相同的配置。HTTP Secretcoordinates上传,所以也必须是相同的实例。配置不同的复述实例将(在撰写本文时),但不会是最优的,如果实例不共享,造成更多请求定向到后端。
+
+
+
+Important/Required HTTP-Headers
+重要的、必要的HTTP-Headers
+
+如基本认证或令牌服务
+
+
+Restricting access
+限制访问
+除了注册安全的本地网络上运行,注册应该实现访问限制。
+
+
+本地基本认证
+实现访问限制的最简单的方法是通过基本身份验证(这非常类似于其他web服务器的基本身份验证机制)。
+警告:您不能使用身份验证与一个不安全的注册表。你必须先配置TLS。
+https://docs.docker.com/registry/deploying/#running-a-domain-registry
+
+
+
+
+
+
+
+
+
+
+
+(5)部署一个注册服务
+
+方式1：
+docker run -d -p 5000:5000 --restart=always --name registry registry:2          # 启动你的注册容器
+docker pull ubuntu && docker tag ubuntu localhost:5000/ubuntu                   # 得到镜像并打上对应的tag
+docker push localhost:5000/ubuntu                                               # 推送到你的私有仓库
+docker pull localhost:5000/ubuntu                                               # 从你的仓库中拉取它
+docker stop registry && docker rm -v registry                                   # 停止你的注册容器并删除
+
+存储
+默认情况下，你的注册数据保存为docker卷在主机的文件系统，正确理解卷是至关重要的，如果你想要一个本地文件系统存储.
+
+方式2：
+数据目录映射
+docker run -d -p 5000:5000 --restart=always --name registry -v `pwd`/data:/var/lib/registry registry:2
+
+
+方式3：
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+私有仓库查看
+curl http://localhost:5000/v2/
+curl http://localhost:5000/v2/_catalog
+
+# curl localhost:5000/v2/_catalog
+{"repositories":["centos-vim","ubuntu"]}
+
+# curl localhost:5000/v2/centos-vim/tags/list
+{"name":"centos-vim","tags":["latest"]}
