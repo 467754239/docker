@@ -1,6 +1,8 @@
 ![截图](./images/Docker基本操作.png)
 
 ## 大纲
+> 译
+
 - [Docker术语表](./术语表)
 - [Centos7升级内核4.8.6并支持AUFS](./Centos7升级内核4.8.6并支持AUFS)
 - [Docker底层实现](./Docker底层实现)
