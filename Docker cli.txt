@@ -56,6 +56,10 @@ $ docker commit -a 'zhengyscn <zhengyscn@gmail.com>' -m 'centos vim' 44f0357bad7
 $ docker tag 5ce3cfbd1c14 zhengyscn/centos-vim:version1.0
 
 
+$ docker save centos > ~/centos_latest.tar
+$ docker save ubuntu:14.04 > ~/ubuntu_1404.tar
+$ docker load < ~/centos_latest.tar
+$ docker load < ~/ubuntu_1404.tar
 
 
 

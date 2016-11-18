@@ -1,4 +1,7 @@
-![截图](./images/Docker基本操作.png)
+![docker](./images/docker_log.jpg)
+> docker官网上四只小动物分表代表docker, docker-swarm, linux, golang
+
+![base_command](./images/Docker基本操作.png)
 
 ## 大纲
 - [Docker术语表](./术语表)
@@ -11,10 +14,11 @@
 - [User Guide](./用户指南)
 - [build private registry](./构建私有仓库)
 - [Docker cli](./Docker cli.txt)
-
+- [Docker的思考](./Docker的思考)
 
 ## 参考文章  
 [docker中文社区](https://github.com/arkii/docs)  
 [docker中文文档](http://docker-doc.readthedocs.io/zh_CN/latest/)  
 [docker官方英文文档](http://docs.master.dockerproject.org/)  
-[基于flask的docker web ui仓库](https://github.com/arkii/docker-registry-ui)  
+[基于flask的docker-registry-ui](https://github.com/arkii/docker-registry-ui)  
+[Docker从入门到实战](https://yeasy.gitbooks.io/docker_practice/content/introduction/)  

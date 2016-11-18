@@ -15,6 +15,8 @@ https://docs.docker.com/registry/deploying/
 http://docs.master.dockerproject.org/registry/spec/api/
 
 --------------------------------------------------------------
+registry v1 使用python语言
+registry v2 使用go语言
 
 (1)它是什么
 注册表是一个无状态的,高度可伸缩的服务器端应用程序商店和允许您分发Docker镜像。这个私有仓库是开源的、遵循Apache license许可证.
@@ -112,22 +114,29 @@ docker run -d -p 5000:5000 --restart=always --name registry -v `pwd`/data:/var/l
 
 
 方式3：
+$ vim /etc/systemd/system/docker.service.d/docker_boot.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/docker daemon -D -s aufs --insecure-registry 192.168.0.110:5000
+
+
 1. 制作自签证书
-mkdir -p ~/certs
-openssl req -newkey rsa:2048 -nodes -sha256 -keyout certs/zhengyscn.key -x509 -days 365 -out ~/certs/zhengyscn.crt
+mkdir -p certs
+openssl req -newkey rsa:2048 -nodes -sha256 -keyout certs/zhengyscn.key -x509 -days 365 -out certs/zhengyscn.crt
     CN
     BJ
     HaiDian
     sengled
     opsdev
-    zhengyscn@gmail.com
+    zhengyscn
+    ....
 
 2. 修改一下/etc/hoss文件
 10.10.105.71 zhengyscn
 
-3. 配置本地访问
-mkdir -p /etc/docker/certs.d/zhengyscn:5000
-cp ~/certs/zhengyscn.crt /etc/docker/certs.d/zhengyscn:5000/ca.crt
+3. 配置本地访问(目录必须是zhengyscn:5000)
+mkdir -p /etc/docker/certs.d/zhengyscn:5000   
+cp certs/zhengyscn.crt /etc/docker/certs.d/zhengyscn:5000/ca.crt
 service docker restart
 
 注意：
@@ -135,8 +144,9 @@ service docker restart
 但如果你使用知名CA这一步也就可以忽略
 
 4. Registry的鉴权管理
-mkdir ~/auth
-docker run --entrypoint htpasswd registry:2 -Bbn admin 123456 > ~/auth/htpasswd
+mkdir auth
+docker pull registry:2
+docker run --entrypoint htpasswd registry:2 -Bbn admin 123456 > auth/htpasswd
 用户名为admin
 密码123456
 
@@ -155,7 +165,7 @@ docker run -d -p 5000:5000 --restart=always --name registry \
 6. 执行docker登录
 # docker login zhengyscn:5000
 Username: admin
-Password: 
+Password: 123456
 Login Succeeded
 
 7. 管理镜像
@@ -164,7 +174,20 @@ Login Succeeded
 # curl --cacert ~/certs/zhengyscn.crt --basic --user admin:123456 https://zhengyscn:5000/v2/ubuntu/tags/list
 {"name":"ubuntu","tags":["latest"]}
 
+--------------------------> 错误汇总 <-------------------------
+# curl 192.168.0.110:5000/v2/
+
+出现这种乱码的 可能是因为权限不对，登录失败.
 
+# docker pull 192.168.0.110:5000/hello-world
+Using default tag: latest
+Error response from daemon: Get https://192.168.0.110:5000/v1/_ping: x509: cannot validate certificate for 192.168.0.110 because it doesn't contain any IP SANs
+
+# docker login zhengyscn:5000
+Username (admin): admin
+Password: 
+Error response from daemon: Get https://zhengyscn:5000/v1/users/: x509: certificate signed by unknown authority
+--------------------------> 错误汇总 <-------------------------
 
 8. 私有仓库http接口
 curl http://localhost:5000/v2/
@@ -177,6 +200,10 @@ curl http://localhost:5000/v2/_catalog
 {"name":"centos-vim","tags":["latest"]}
 
 
+
+
+10. 临时命令
+docker tag centos:latest zhengyscn:5000/centos:latest
 
 
 
