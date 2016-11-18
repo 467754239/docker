@@ -3,56 +3,66 @@
 https://leancloud.cn/
 DaoCloud
 云雀
+云精灵云
+flynn和deis是基础Docker实现的开源PaaS，相比CloudFoundry更小、更轻。
 
 
-使用Docker注意的是"一致性"问题
 
 
-资源隔离：比如限制应用最大内存使用量，或者资源加载隔离等
-低消耗：虚拟化本身带来的损耗需要尽量的低。
+(1) Docker本质
+Docker本质上是一种内核模块级别的隔离技术
 
-
+(2) Doccker余传统虚拟化性能上的对比
 传统的虚拟化在资源隔离上性能很好，但是在资源使用方面浪费比较严重.
 Docker 很好的权衡了两者，即拥有不错的资源隔离能力，又有很低的虚拟化开销。
 
-flynn和deis是基础Docker实现的开源PaaS，相比CloudFoundry更小、更轻。
-
-根据Docker布道师Jerome Petazzoni的说法，Docker约等于LXC+AUFS（之前只支持ubuntu时）。其中LXC负责资源管理，AUFS负责镜像管理；
-而LXC又包括cgroup、namespace、chroot等组件，并通过cgroup进行资源管理。所以只从资源管理这条线来看的话，
-Docker、LXC、CGroup三者的关系是：cgroup在最底层落实资源管理，LXC在cgroup上封装了一层，Docker又在LXC封装了一层。
-
-Docker专为微服务而生。微服务的Docker化部署，实现了：
-1. 独立性：一个容器就是一个完整的执行环境，不依赖外部任何的东西。
-2. 细粒度： 一台物理机器可以同时运行成百上千个容器。其计算粒度足够的小。
-3. 快速创建和销毁： 容器可以在秒级进行创建和销毁，非常适合服务的快速构建和重组。
-4. 完善的管理工具： 数量众多的容器编排管理工具，能够快速的实现 服务的组合和调度。
-
-docker 并没有用aufs，因为它没有并入kernel 主线，而overlay 并入了。
-本质是将多个文件系统分层使用。,只能修改上层fs 的内容。具体参见kernel和docker 的相关文档。这个在openwrt 里面也有应用。
+xen属于操作系统级别的虚拟化，docker属于应用进程级别的虚拟化。相比来说xen的隔离性比docker更好
+xen是虚拟机，docker是进程
 
 
-八个Docker的真实应用场景
-http://dockone.io/article/126
-
-
-docker守护进程退出，所有容跟着退出有什么好的解决方案？
+(3) docker解决守护进程退出后，所有的容器也退出
 容器的启动方式统一使用--restart=always，这种模式会使docker daemon退出重启后容器服务自动恢复，所以只要保证docker daemon不退出即可解决此类问题，保证docker daemon不退出的方法由很多种常见的就是使用supervisor或者其他类似工具进行管理
 
-Machine是在虚拟机上运行docker，通过machine可以快速在虚拟机里面部署docker，因此如果是非linux环境，实际是启动一个虚拟机，然后远程上去的，适合学习和测试。
+
+(4) Docker的生态Machine、Compose、Swarm
+Machine是在虚拟机上运行docker，通过machine可以快速在虚拟机里面部署docker，因此如果是非linux环境，实际是启动一个虚拟机，
+然后远程上去的，适合学习和测试。
 Compose是docker自带的编排工具，最初处理多个容器在一台主机上的启动和依赖。
 Swarm是自带的集群管理工具，通过它可以把多个docker虚拟成一个集群，同时支持原生API，正因为如此compose结合swarm后就可以跨主机编排。不过swarm还是比较新的集群管理工具，稳定性还有待提高。国内的话，我们ghostcloud一直是致力于打造最专业的容器云平台，会在后续陆续支持compose和swarm.
 
+(5) 特性
 记住一名话“容器是可以随时放弃的”。
 不要在容器里保存数据，需要保存的数据放到卷里去；
 你现在是把容器当虚拟机在用，舍弃求末；
 用Dockerfile重新定义一下镜像，把JDK及你的APP数据都放卷里去
 
+(6) 场景
 容器和虚拟机的区别是容器是轻量级的，启动速度快，所以适合跑一些轻量的应用，比如微服务。而重型应用是不适合跑在容器上，容器的一个特性就是可以弹性伸缩，如果是重型应用，在调度时启动的时间过会依然很长，就失去了使用容器秒起的优势。
 
+
+(7) Docker免费监控及性能分析工具
+1.Docker Stats。
+2.CAdvisor。
+3.Sensu。
+4. seagull 应该是个国人写得
+5. Prometheus 和Cadvisor结合，可以实现告警功能
+可以参考文档
+http://dockone.io/article/397
+
+
+
+
+---------------------------------参考文章-----------------------------------------------
 
 家林在【云计算Docker虚拟化公益大讲坛】的视频.
 https://www.douban.com/group/topic/75595716/
 
-
 Docker入门教程（一）介绍
 http://dockone.io/article/101
+
+一篇不一样的docker原理解析
+https://zhuanlan.zhihu.com/p/22382728
+
+
+八个Docker的真实应用场景
+http://dockone.io/article/126
