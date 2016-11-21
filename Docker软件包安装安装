@@ -15,4 +15,9 @@ Docker要安装在64位操作系统
 方式1 你可以使用yum进行安装
 方式2 运行一个安装脚本(脚本其实也是YUM的方式)
 
+$ sudo yum update
+$ curl -fsSL https://get.docker.com/ | sh -x
+$ sudo service docker start
+$ sudo docker run hello-world
+
 大致意思是这样的，更具体的可以参考上面链接.
