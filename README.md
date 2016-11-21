@@ -12,8 +12,9 @@
 - [Get Started with Docker](./开始使用Docker)
 - [Learn by example](./通过示例学习Docker)
 - [User Guide](./用户指南)
-- [build private registry](./构建私有仓库)
-- [Docker cli](./Docker cli.txt)
+- [Build private registry](./构建私有仓库)
+- [Format private registry](./myscripts/eq_docker_registry.py)
+- [Docker cli](./Docker cli.txt)  
 - [Docker的思考](./Docker的思考)
 
 ## 参考文章  
