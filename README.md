@@ -13,7 +13,8 @@
 - [Learn by example](./通过示例学习Docker)
 - [User Guide](./用户指南)
 - [Build private registry](./构建私有仓库)
-- [Format private registry](./myscripts/req_docker_registry.py)
+- [registry api](./myscripts/req_docker_registry.py)
+- [quick exec container](./myscripts/dgo)
 - [Docker cli](./Docker cli.txt)  
 - [Docker的思考](./Docker的思考)
 

@@ -134,7 +134,7 @@ openssl req -newkey rsa:2048 -nodes -sha256 -keyout certs/zhengyscn.key -x509 -d
 2. 修改一下/etc/hoss文件
 10.10.105.71 zhengyscn
 
-3. 配置本地访问(目录必须是zhengyscn:5000)
+3. 配置本地访问(目录必须是zhengyscn:5000并且客户端也要拷贝这个证书到对应的文件中)
 mkdir -p /etc/docker/certs.d/zhengyscn:5000   
 cp certs/zhengyscn.crt /etc/docker/certs.d/zhengyscn:5000/ca.crt
 service docker restart
@@ -199,6 +199,17 @@ curl http://localhost:5000/v2/_catalog
 # curl localhost:5000/v2/centos-vim/tags/list
 {"name":"centos-vim","tags":["latest"]}
 
+9. 更改镜像的存储空间
+作为镜像仓库，那么必然存储了很多的镜像文件，势必占用了较大的空间，这个时候默认的根空间可能受限
+
+service docker stop
+cd /var/lib
+cp -arf docker docker_01
+mv docker docker_02
+mkdir docker
+chmod 711 docker -R
+cp -arf docker_01/* docker
+mount /dev/sdb1 /var/lib/docker
 
 
 
