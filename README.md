@@ -1,9 +1,9 @@
 ![docker](./images/docker_log.jpg)
 > docker官网上四只小动物分表代表docker, docker-swarm, linux, golang
 
-![base_command](./images/Docker基本操作.png)
-
 ## 大纲
+[![Build Status](https://travis-ci.org/justjavac/free-programming-books-zh_CN.svg?branch=master)](https://github.com/467754239/docker)
+
 - [Docker术语表](./术语表)
 - [Centos7升级内核4.8.6并支持AUFS](./Centos7升级内核4.8.6并支持AUFS)
 - [Docker底层实现](./Docker底层实现)
