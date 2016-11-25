@@ -1,0 +1,59 @@
+
+## Shipyard
+
+
+部署提供了两种方式 自动和手动
+https://shipyard-project.com/docs/deploy/
+
+自动方式比较简单 执行脚本就安装完成
+curl -sSL https://shipyard-project.com/deploy | bash -s
+
+# docker ps | awk '{ print $NF}'
+NAMES
+shipyard-controller
+shipyard-swarm-agent
+shipyard-swarm-manager
+shipyard-proxy
+shipyard-certs
+shipyard-discovery
+shipyard-rethinkdb
+
+
+## 自动部署
+执行脚本、一定要关闭firewalld服务，否则可以登录shipyard，但是看不到宿主机上的容器.
+iptables -t nat -F
+iptables -F
+
+
+## 关闭、移除shipyard
+cat shipyard-deploy.sh| ACTION=remove bash -s
+
+
+## 增加一个节点
+Shipyard 部署脚本将自动建立一个key/value存储，额外的节点添加到Swarm集群，您可以使用该脚本通过指定node 动作，
+例如， 如果你的初始节点的IP是10.0.0.10，你能添加一个节点运行一下命令
+curl -sSL https://shipyard-project.com/deploy | ACTION=node DISCOVERY=etcd://10.100.102.245:4001 bash -s
+
+IMAGE=shipyard/shipyard:test
+
+netstat -ant  |grep 4243
+
+
+hostnamectl set-hostname <host-name>
+
+systemctl disable firewalld
+systemctl stop firewalld
+systemctl status firewalld
+
+
+Shipyard 官方文档
+https://shipyard-project.com/
+
+在centos7上怎样stop和disable掉firewalld
+https://www.liquidweb.com/kb/how-to-stop-and-disable-firewalld-on-centos-7/
+
+https://segmentfault.com/a/1190000002464365
+
+
+Shipyard管理Docker容器
+http://valleylord.github.io/post/201601-docker-shipyard/
