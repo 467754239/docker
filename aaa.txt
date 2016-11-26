@@ -1,0 +1,173 @@
+
+C/S架构
+
+Docker提供了一种打包、输送、运行任意应用的容器解决方案.
+
+集中箱技术
+
+磁盘占用空间小、内存消费小
+
+镜像分层技术
+
+Registry 持续集成、自动化平台
+
+
+
+ADD 要比 COPY 命令 多两个功能
+1. 支持URL链接地址
+2. 自动解压压缩包
+
+
+每执行一条Dockerfile指令build镜像时就是一层.
+
+EXPOSR 22
+容器暴露给宿主机的端口号
+
+ENTRYPOINT
+写了很多条ENTRYPOINT 但只有最后一条生效，而且是容器每次启动时要执行的命令.
+
+ENTRYPOINT 和 CMD的区别
+ENTRYPOINT 多条ENTRYPOINT指令只有最后一条会执行 其余的会被忽略
+["", "", ""] 这种写法 在容器内部的pid为1 建议这种方式
+command1 args1 args2 这种写法 在容器内是shell命令执行完后的pid
+
+
+CMD可以被覆盖掉 比如 /bin/bash 覆盖/bin/echo
+ENTRYPOINT 不可以被覆盖掉  比如 /bin/bash 覆盖/bin/echo
+
+docker build -t zhengyscn:5000/centos:latest .
+
+OR
+
+docker build -t zhengyscn:5000/centos:latest ./path
+
+registry_url/namesapce/csphere/centos:7.1
+
+
+docker build是使用一个Dockerfile生成一个镜像
+
+
+docker run
+	-it
+	-d
+	--name
+	-p
+	-P
+
+
+ONBUILD
+非常重要的参数
+在自已构建这个镜像的时候这个参数不生效，别人基于这个镜像构建的时候生效.
+
+exec
+
+
+attach
+这个命令不好使、容易卡顿、退出之后容器就死掉了. 建议使用exec
+
+
+supervisorctl
+
+
+
+VOLUME
+宿主机的文件目录可以映射到容器内的文件目录
+
+-e
+传递环境变量到容器内
+
+
+
+bin bash脚本
+set -e命令
+如果脚本中有一处出现问题 就不继续往后执行
+
+
+
+.dockerignore
+Dockerfile
+
+--------------------------------------------------------------------
+
+如何使用Docker实现持续集成
+
+# 流程
+使用Dockerfile生成一个Docker镜像 并为镜像打上一个tag  推送到远程私有仓库
+
+
+企业内部的Docker Hub -> registry
+
+Docker镜像的命名规则
+registry_url/namespace/wordpress:v1.0.12
+ip:5000/sengled/
+
+
+
+# Docker compose
+Docker的编排工具，能够自动的去添加、去执行YAML配置文件中的指令，能够启动一个或多个容器.
+
+docker-compose.yml 文件
+
+启动compose命令
+docker-compose up -d
+docker-compose stop
+docker-compose ps
+docker-compose rm
+
+https://github.com/nicescale/docker-training
+
+持续集成
+
+1. 设计、研发
+2. 测试(单元测试、功能测试、接口测试)
+3. 部署运维
+
+构建一个jenkins的容器
+
+用maven将java程序编译成一个war包，拷贝出来放到容器tomcat目录下进行运行.
+
+
+内网应该有一个maven源
+
+build-nginx
+
+
+
+基础镜像 + 中间件镜像 + 应用镜像
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+48分钟
+http://study.163.com/course/introduction/1667003.htm#/courseDetail
+http://www.jikexueyuan.com/course/docker/
+http://study.163.com/category/cloud-computing?utm_source=baidu&utm_medium=cpc&utm_campaign=affiliate&utm_term=PZPC19338&utm_content=SEM
+
+https://zhuanlan.zhihu.com/p/20670168
+https://zhuanlan.zhihu.com/p/23508637
+
+
+
+
+----------------------------------------------------------------
+网易云课堂
+
+Docker实战之旅
+http://study.163.com/course/introduction/1667003.htm#/courseDetail
