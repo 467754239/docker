@@ -15,6 +15,9 @@ https://docs.docker.com/registry/deploying/
 http://docs.master.dockerproject.org/registry/spec/api/
 
 --------------------------------------------------------------
+
+
+
 registry v1 使用python语言
 registry v2 使用go语言
 
@@ -89,10 +92,13 @@ https://docs.docker.com/registry/deploying/#running-a-domain-registry
 
 
 
+## 什么是Docker Registry
+Docker Registry由三个部分组成：index，registry，registry client。
+可以把Index认为是负责登录、负责认证、负责存储镜像信息和负责对外显示的外部实现，
+而registry则是负责存储镜像的内部实现，而Registry Client则是docker客户端。
 
 
-
-
+docker tag IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
 
 
 
@@ -217,7 +223,7 @@ mount /dev/sdb1 /var/lib/docker
 docker tag centos:latest zhengyscn:5000/centos:latest
 
 
-
+----------------------------------------------------------------------------------------
 构建私有仓库参考文章
 http://www.cnblogs.com/baxk/p/5225533.html
 

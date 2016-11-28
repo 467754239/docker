@@ -1,0 +1,15 @@
+
+## 如何在Docker container内使用docker cli命令
+
+将宿主机上的/usr/bin/docker和/var/run/docker.sock挂载到容器内
+$ docker run -d -v /var/run/docker.sock:/var/run/docker.sock \
+                -v $(which docker):/usr/bin/docker -p 8080:8080 myjenk
+
+[root@localhost bin]# dgo myjenkins
++ DID=myjenkins
++ [[ myjenkins == '' ]]
++ docker exec -i -t myjenkins bash
+jenkins@8d200112387f:/$ docker ps
+Cannot connect to the Docker daemon. Is the docker daemon running on this host? 但是这个还是报错
+
+临时解决办法通过在宿主机上执行chmod 777 //var/run/docker.sock.
